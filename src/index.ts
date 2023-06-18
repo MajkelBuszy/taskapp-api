@@ -2,22 +2,24 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import cors from 'cors';
-import bodyParser from 'body-parser';
+
+import { Task } from './api/v1/models/taskEntity';
 
 dotenv.config();
 
 const app: Express = express();
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 export const db: DataSource = new DataSource({
     type: 'mysql',
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
     username: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    password: process.env.DB_PASSWD,
     database: process.env.DB_NAME,
+    entities: [Task],
     synchronize: true,
 });
 
