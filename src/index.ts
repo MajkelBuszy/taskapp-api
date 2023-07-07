@@ -1,9 +1,11 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import cors from 'cors';
 
-import { Task } from './api/v1/models/taskEntity';
+import { Task } from './api/v1/models/tasksEntity';
+
+import taskRoute from './api/v1/routes/tasksRoute';
 
 dotenv.config();
 
@@ -25,10 +27,6 @@ export const db: DataSource = new DataSource({
 
 const PORT = process.env.PORT || 5000;
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!');
-});
-
 db.initialize()
     .then(() => {
         console.log('Database connected');
@@ -37,3 +35,5 @@ db.initialize()
     .catch((err: Error) => {
         console.log(err);
     });
+
+app.use('/tasks', taskRoute);
