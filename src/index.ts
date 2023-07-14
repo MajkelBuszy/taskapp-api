@@ -22,7 +22,7 @@ export const db: DataSource = new DataSource({
     password: process.env.DB_PASSWD,
     database: process.env.DB_NAME,
     entities: [Task],
-    synchronize: true,
+    synchronize: false,
 });
 
 const PORT = process.env.PORT || 5000;

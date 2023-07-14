@@ -20,6 +20,14 @@ const schemaTaskBody = Joi.object({
         .error(new Error('Status is required')),
 });
 
+const schemaUpdateTaskBody = Joi.object({
+    id: Joi.string().required().error(new Error('Id is required')),
+    status: Joi.string()
+        .valid(Status.todo, Status.inProgress, Status.done)
+        .required()
+        .error(new Error('Status is required')),
+});
+
 const taskBodyValidation = async (
     req: Request,
     res: Response,
@@ -38,4 +46,22 @@ const taskBodyValidation = async (
     next();
 };
 
-export { taskBodyValidation };
+const updateTaskBodyValidation = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void | Response<{ message: string }>> => {
+    try {
+        const { error } = schemaUpdateTaskBody.validate(req.body);
+
+        if (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    } catch (e) {
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+
+    next();
+};
+
+export { taskBodyValidation, updateTaskBodyValidation };
