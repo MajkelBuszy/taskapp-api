@@ -1,3 +1,4 @@
+import { UpdateResult } from 'typeorm';
 import { db } from '../../../index';
 import { Task } from '../models/tasksEntity';
 import { instanceToPlain } from 'class-transformer';
@@ -29,8 +30,8 @@ class TasksService {
         return newTask;
     }
 
-    public async updateTask(task: Task): Promise<Task> {
-        const updatedTask = await db.getRepository(Task).save(task);
+    public async updateTask(task: Task): Promise<UpdateResult> {
+        const updatedTask = await db.getRepository(Task).update(task.id, task);
 
         return updatedTask;
     }
