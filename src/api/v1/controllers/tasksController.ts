@@ -17,7 +17,7 @@ const postTask = async (req: Request, res: Response) => {
     try {
         const newTask = await tasksService.createTask({
             title: req.body.title,
-            date: new Date().toISOString(),
+            date: new Date(req.body.date).toISOString(),
             description: req.body.description,
             priority: req.body.priority,
             status: req.body.status,
